@@ -56,10 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return GestureDetector(
       onTap: () {
         selectedType = title;
-        if (title == 'Week') {
-          Provider.of<CalendarProvider>(context, listen: false)
-              .createDataFromRange(startRange, endRange);
-        }
         setState(() {});
       },
       child: Container(
@@ -118,9 +114,20 @@ class _MyHomePageState extends State<MyHomePage> {
     if (selectedRange != null) {
       startRange = selectedRange.start;
       endRange = selectedRange.end;
-      Provider.of<CalendarProvider>(context, listen: false)
-          .createDataFromRange(startRange, endRange);
+      createDateRange();
     }
+  }
+
+  createDateRange() {
+    Provider.of<CalendarProvider>(context, listen: false)
+        .createDataFromRange(startRange, endRange);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 0))
+        .then((value) => createDateRange());
   }
 
   @override
